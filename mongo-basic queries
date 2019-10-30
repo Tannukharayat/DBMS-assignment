@@ -1,0 +1,213 @@
+1. Crete a collection having name  “student” with following documents:
+            {
+	“roll_no” : 1,
+	"name" : "amit",
+	"addr" : "Loni"
+              },
+         {
+	"roll_no" : 2,
+	"name" : "shashir",
+	"addr" : {
+		"At" : "Loni",
+		"Tal" : "Rahata",
+		"Dist" : "Ahemadnagar"
+	            }
+         },
+      {
+	“roll_no" : 11,
+	"name" : "sachin",
+	"percent_marks" : 60.23,
+	"addr" : "Pune"
+      },
+       {
+	"name" : "Rahul",
+	"Address”: "Kolhar"
+      }
+
+    db.Student.insert({roll_no : 1,name : 'Amit',addr : "Loni"} );
+    db.Student.insert([{ roll_no : 2,name : "Shshir",addr : {At : "Loni",Tal : "Rahta",Dist : "Ahemadnagar" } } , { roll_no : 11 ,name : "Sachin",percent_marks : 60.23, addr : "Pune"} ]);
+    db.Student.insert({name : "Rahul",Address : "Kolhar"});
+
+2.Insert new documents into a collection named “student”.
+    db.Student.insert({roll_no : 3, name : 'Rahul',addr : 'Kolkata'})
+
+3. Retrieve all students’ details.
+
+    db.Student.find().pretty();
+    {
+            "_id" : ObjectId("5db18415517ae4d7995eb755"),
+            "roll_no" : 1,
+            "name" : "Amit",
+            "addr" : "Loni"
+    }
+    {
+            "_id" : ObjectId("5db184fb517ae4d7995eb756"),
+            "roll_no" : 2,
+            "name" : "Shshir",
+            "addr" : {
+                    "At" : "Loni",
+                    "Tal" : "Rahta",
+                    "Dist" : "Ahemadnagar"
+            }
+    }
+    {
+            "_id" : ObjectId("5db184fb517ae4d7995eb757"),
+            "roll_no" : 11,
+            "name" : "Sachin",
+            "percent_marks" : 60.23,
+            "addr" : "Pune"
+    }
+    {
+            "_id" : ObjectId("5db18545517ae4d7995eb758"),
+            "name" : "Rahul",
+            "Address" : "Kolhar"
+    }
+    {
+            "_id" : ObjectId("5db186a5517ae4d7995eb759"),
+            "roll_no" : 3,
+            "name" : "Rahul",
+            "addr" : "Kolkata"
+    }
+4. Display only name field from student collection.
+    db.Student.find({},{roll_no :1}).pretty();
+    { "_id" : ObjectId("5db18415517ae4d7995eb755"), "roll_no" : 1 }
+    { "_id" : ObjectId("5db184fb517ae4d7995eb756"), "roll_no" : 2 }
+    { "_id" : ObjectId("5db184fb517ae4d7995eb757"), "roll_no" : 11 }
+    { "_id" : ObjectId("5db18545517ae4d7995eb758") }
+    { "_id" : ObjectId("5db186a5517ae4d7995eb759"), "roll_no" : 3 }
+
+5. Display first 5 student details. ( Use limit () )
+    db.Student.find().pretty().limit(5);
+    {
+            "_id" : ObjectId("5db18415517ae4d7995eb755"),
+            "roll_no" : 1,
+            "name" : "Amit",
+            "addr" : "Loni"
+    }
+    {
+            "_id" : ObjectId("5db184fb517ae4d7995eb756"),
+            "roll_no" : 2,
+            "name" : "Shshir",
+            "addr" : {
+                    "At" : "Loni",
+                    "Tal" : "Rahta",
+                    "Dist" : "Ahemadnagar"
+            }
+    }
+    {
+            "_id" : ObjectId("5db184fb517ae4d7995eb757"),
+            "roll_no" : 11,
+            "name" : "Sachin",
+            "percent_marks" : 60.23,
+            "addr" : "Pune"
+    }
+    {
+            "_id" : ObjectId("5db18545517ae4d7995eb758"),
+            "name" : "Rahul",
+            "Address" : "Kolhar"
+    }
+    {
+            "_id" : ObjectId("5db186a5517ae4d7995eb759"),
+            "roll_no" : 3,
+            "name" : "Rahul",
+            "addr" : "Kolkata"
+    }
+
+6. Fetch the remaining documents after first 5 documents.(Use skip () )
+    db.Student.find().pretty().skip(5);
+    {
+            "_id" : ObjectId("5db188e0517ae4d7995eb75a"),
+            "roll_no" : 4,
+            "name" : "Mohit",
+            "addr" : "Delhi"
+    }
+
+7. Find the details of student whose roll_no is between 5 and 10.
+    db.Student.find({roll_no : { $lt :10 },roll_no : {$gt : 5} }).pretty()
+    {
+            "_id" : ObjectId("5db184fb517ae4d7995eb757"),
+            "roll_no" : 11,
+            "name" : "Sachin",
+            "percent_marks" : 60.23,
+            "addr" : "Pune"
+    }
+
+8. Display the student details whose address is “Loni” or “Pune”.
+    db.Student.find({$or : [{addr : "Loni" },{addr : "Pune" } ] }).pretty()
+    {
+            "_id" : ObjectId("5db18415517ae4d7995eb755"),
+            "roll_no" : 1,
+            "name" : "Amit",
+            "addr" : "Loni"
+    }
+    {
+            "_id" : ObjectId("5db184fb517ae4d7995eb757"),
+            "roll_no" : 11,
+            "name" : "Sachin",
+            "percent_marks" : 60.23,
+            "addr" : "Pune"
+    }
+
+9. Sort the documents of student collection in ascending order of roll_no.
+    db.Student.find({}).sort({roll_no : 1}).pretty();
+    {
+            "_id" : ObjectId("5db18545517ae4d7995eb758"),
+            "name" : "Rahul",
+            "Address" : "Kolhar"
+    }
+    {
+            "_id" : ObjectId("5db18415517ae4d7995eb755"),
+            "roll_no" : 1,
+            "name" : "Amit",
+            "addr" : "Loni"
+    }
+    {
+            "_id" : ObjectId("5db184fb517ae4d7995eb756"),
+            "roll_no" : 2,
+            "name" : "Shshir",
+            "addr" : {
+                    "At" : "Loni",
+                    "Tal" : "Rahta",
+                    "Dist" : "Ahemadnagar"
+            }
+    }
+    {
+            "_id" : ObjectId("5db186a5517ae4d7995eb759"),
+            "roll_no" : 3,
+            "name" : "Rahul",
+            "addr" : "Kolkata"
+    }
+    {
+            "_id" : ObjectId("5db188e0517ae4d7995eb75a"),
+            "roll_no" : 4,
+            "name" : "Mohit",
+            "addr" : "Delhi"
+    }
+    {
+            "_id" : ObjectId("5db184fb517ae4d7995eb757"),
+            "roll_no" : 11,
+            "name" : "Sachin",
+            "percent_marks" : 60.23,
+            "addr" : "Pune"
+    }
+
+10. Remove all those documents having roll_no less than 8 and greater than 3.
+    db.Student.remove({$and:[ {roll_no : {$lt : 8},roll_no :{$gt:3 } }] })
+
+11. Remove all those documents whose address is “Loni”.
+    db.Student.remove({addr : 'Loni'});
+
+12. Add these details to a document where _id=10 (Use save() )
+     Name =”Ram”                  Roll _no = 60
+     Address =”Pune”
+    db.Student.save({_id : 10,name : 'Ram',roll_no : 60,Address : 'Pune' })
+
+13. Update the address of roll_no 1. Change the address as
+    At: “Sangamner”      Tal:”Sangamner”         Dist: “Ahemadnagar”
+	  db.Student.update({roll_no : 2 },{$set : {addr:{At:"Sangamner",Tal:"Sagamner",Dist:"Ahemadnagar"} } })
+	
+14. Create Index on roll_no  field
+    db.student.ensureIndex({roll_no: 1})
+
+15. Remove collection “student”
+    db.student.drop()
