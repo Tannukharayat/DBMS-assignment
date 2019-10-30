@@ -1,0 +1,112 @@
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| db1                |
+| db6                |
+| db7                |
+| db8                |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+8 rows in set (0.05 sec)
+
+mysql> create database practice;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> use practice;
+Database changed
+mysql> create table borrower(
+    -> r_no int,
+    -> name varchar(20),
+    -> dateofissue date,
+    -> nameofbook varchar(40),
+    -> status char
+    -> );
+Query OK, 0 rows affected (0.59 sec)
+
+mysql> create table fine(
+    -> r_no int,
+    -> date date,
+    -> amnt int);
+Query OK, 0 rows affected (0.36 sec)
+
+mysql> insert into borrower values(1,'nidhi','2019-07-11','dsa','I');
+Query OK, 1 row affected (0.08 sec)
+
+mysql> insert into borrower values(2,'nikita','2019-10-4','oop','I');
+Query OK, 1 row affected (0.05 sec)
+
+mysql> insert into borrower values(3,'tanu','2019-09-25','coa','I');
+Query OK, 1 row affected (0.05 sec)
+
+mysql> insert into borrower values(4,'diksha','2019-10-08','coa','I');
+Query OK, 1 row affected (0.05 sec)
+
+mysql> select * from borrower;
+    -> //
++------+--------+-------------+------------+--------+
+| r_no | name   | dateofissue | nameofbook | status |
++------+--------+-------------+------------+--------+
+|    1 | nidhi  | 2019-07-11  | dsa        | I      |
+|    2 | nikita | 2019-10-04  | oop        | I      |
+|    3 | tanu   | 2019-09-25  | coa        | I      |
+|    4 | diksha | 2019-10-08  | coa        | I      |
++------+--------+-------------+------------+--------+
+4 rows in set (0.00 sec)
+
+mysql> select * from fine;
+    -> //
+Empty set (0.00 sec)
+
+mysql> create procedure calculate_fine(IN r_no_t int,IN name_t varchar(20)) 
+begin 
+declare diff int; 
+declare diff2 int; 
+declare fineamt int; 
+declare inidate date; 
+select dateofissue into inidate from borrower where r_no_t=r_no and name_t=name; 
+select DATEDIFF(curdate(),inidate) into diff; 
+set diff2=diff-15; 
+if(diff2>=0and diff2<15) then  
+set fineamt=5*diff2;insert into fine values(r_no_t,curdate(),fineamt); 
+elseif(diff2>15) then 
+set fineamt=75+(diff2-15)*50;
+insert into fine values(r_no_t,curdate(),fineamt); 
+end if; 
+update borrower set status='R' where r_no_t=r_no and name_t=name; 
+end//
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> CALL calculate_fine(2,'nikita')//
+Query OK, 1 row affected (0.05 sec)
+
+mysql> select * from borrower//
++------+--------+-------------+------------+--------+
+| r_no | name   | dateofissue | nameofbook | status |
++------+--------+-------------+------------+--------+
+|    1 | nidhi  | 2019-07-11  | dsa        | I      |
+|    2 | nikita | 2019-10-04  | oop        | R      |
+|    3 | tanu   | 2019-09-25  | coa        | I      |
+|    4 | diksha | 2019-10-08  | coa        | I      |
++------+--------+-------------+------------+--------+
+4 rows in set (0.00 sec)
+
+mysql> select * from fine//
+Empty set (0.00 sec)
+
+mysql> CALL calculate_fine(1,'nidhi')//
+Query OK, 1 row affected (0.14 sec)
+
+mysql> select * from fine//
++------+------------+------+
+| r_no | date       | amnt |
++------+------------+------+
+|    1 | 2019-10-09 | 3075 |
++------+------------+------+
+1 row in set (0.00 sec)
+
+mysql> 
+
