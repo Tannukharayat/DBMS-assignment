@@ -1,205 +1,174 @@
 1. Create Collection Employee and insert following documents into it
-> db.employee.insert({'custID':'A123','Amount':500,'status':'A'})
-
-> db.employee.insert({'custID':'A123','Amount':250,'status':'A'})
-
-> db.employee.insert({'custID':'B212','Amount':200,'status':'A'})
-
-> db.employee.insert({'custID':'A123','Amount':300,'status':'D'})
+	> db.employee.insert({'custID':'A123','Amount':500,'status':'A'})
+	> db.employee.insert({'custID':'A123','Amount':250,'status':'A'})
+	> db.employee.insert({'custID':'B212','Amount':200,'status':'A'})
+	> db.employee.insert({'custID':'A123','Amount':300,'status':'D'})
 
 2. Display records
- db.employee.find().pretty()
-{
-	"_id" : ObjectId("53d093599c406c0509bc5f89"),
-	"custID" : "A123",
-	"Amount" : 500,
-	"status" : "A"
-}
-{
-	"_id" : ObjectId("53d093829c406c0509bc5f8a"),
-	"custID" : "A123",
-	"Amount" : 250,
-	"status" : "A"
-}
-{
-	"_id" : ObjectId("53d093a69c406c0509bc5f8b"),
-	"custID" : "B212",
-	"Amount" : 200,
-	"status" : "A"
-}
-{
-	"_id" : ObjectId("53d093c49c406c0509bc5f8c"),
-	"custID" : "A123",
-	"Amount" : 300,
-	"status" : "D"
-}
+	 db.employee.find().pretty()
+	{
+		"_id" : ObjectId("53d093599c406c0509bc5f89"),
+		"custID" : "A123",
+		"Amount" : 500,
+		"status" : "A"
+	}
+	{
+		"_id" : ObjectId("53d093829c406c0509bc5f8a"),
+		"custID" : "A123",
+		"Amount" : 250,
+		"status" : "A"
+	}
+	{
+		"_id" : ObjectId("53d093a69c406c0509bc5f8b"),
+		"custID" : "B212",
+		"Amount" : 200,
+		"status" : "A"
+	}
+	{
+		"_id" : ObjectId("53d093c49c406c0509bc5f8c"),
+		"custID" : "A123",
+		"Amount" : 300,
+		"status" : "D"
+	}
 3. Find out total amount for individual customer ID having status ‘A’
-
-db.employee.aggregate([{$match:{'status':'A'}},{$group:{_id:'$custID','totalAmount':{$sum:'$Amount'}}}])
-{ "_id" : "B212", "totalAmount" : 200 }
-{ "_id" : "A123", "totalAmount" : 750 }
+	db.employee.aggregate([{$match:{'status':'A'}},{$group:{_id:'$custID','totalAmount':{$sum:'$Amount'}}}])
+	{ "_id" : "B212", "totalAmount" : 200 }
+	{ "_id" : "A123", "totalAmount" : 750 }
 
 4. Find out minimum amount for individual customer ID having status ‘A’
-
-db.employee.aggregate([{$match:{'status':'A'}},{$group:{_id:'$custID','totalAmount':{$min:'$Amount'}}}])
-{ "_id" : "B212", "totalAmount" : 200 }
-{ "_id" : "A123", "totalAmount" : 250 }
+	db.employee.aggregate([{$match:{'status':'A'}},{$group:{_id:'$custID','totalAmount':{$min:'$Amount'}}}])
+	{ "_id" : "B212", "totalAmount" : 200 }
+	{ "_id" : "A123", "totalAmount" : 250 }
 
 5. Find out maximum amount for individual customer ID having status ‘A’
-
-db.employee.aggregate([{$match:{'status':'A'}},{$group:{_id:'$custID','totalAmount':{$max:'$Amount'}}}])
-{ "_id" : "B212", "totalAmount" : 200 }
-{ "_id" : "A123", "totalAmount" : 500 }
+	db.employee.aggregate([{$match:{'status':'A'}},{$group:{_id:'$custID','totalAmount':{$max:'$Amount'}}}])
+	{ "_id" : "B212", "totalAmount" : 200 }
+	{ "_id" : "A123", "totalAmount" : 500 }
 
 
 6. Find out average amount for individual customer ID having status ‘A’
-
-db.employee.aggregate([{$match:{'status':'A'}},{$group:{_id:'$custID','totalAmount':{$avg:'$Amount'}}}])
-{ "_id" : "B212", "totalAmount" : 200 }
-{ "_id" : "A123", "totalAmount" : 375 }
+	db.employee.aggregate([{$match:{'status':'A'}},{$group:{_id:'$custID','totalAmount':{$avg:'$Amount'}}}])
+	{ "_id" : "B212", "totalAmount" : 200 }
+	{ "_id" : "A123", "totalAmount" : 375 }
 
 7. Find out amount of First record for individual customer ID having status ‘A’
-
-db.employee.aggregate([{$match:{'status':'A'}},{$group:{_id:'$custID','totalAmount':{$first:'$Amount'}}}])
-{ "_id" : "B212", "totalAmount" : 200 }
-{ "_id" : "A123", "totalAmount" : 500 }
+	db.employee.aggregate([{$match:{'status':'A'}},{$group:{_id:'$custID','totalAmount':{$first:'$Amount'}}}])
+	{ "_id" : "B212", "totalAmount" : 200 }
+	{ "_id" : "A123", "totalAmount" : 500 }
 
 8. Find out amount of last record for individual customer ID having status ‘A’
-
-db.employee.aggregate([{$match:{'status':'A'}},{$group:{_id:'$custID','totalAmount':{$last:'$Amount'}}}])
-{ "_id" : "B212", "totalAmount" : 200 }
-{ "_id" : "A123", "totalAmount" : 250 }
+	db.employee.aggregate([{$match:{'status':'A'}},{$group:{_id:'$custID','totalAmount':{$last:'$Amount'}}}])
+	{ "_id" : "B212", "totalAmount" : 200 }
+	{ "_id" : "A123", "totalAmount" : 250 }
 
 9. Create array of amount for individual customer ID having status ‘A’
-
-db.employee.aggregate([{$match:{'status':'A'}},{$group:{_id:'$custID','totalAmount':{$push:'$Amount'}}}])
-{ "_id" : "B212", "totalAmount" : [ 200 ] }}
+	db.employee.aggregate([{$match:{'status':'A'}},{$group:{_id:'$custID','totalAmount':{$push:'$Amount'}}}])
+	{ "_id" : "B212", "totalAmount" : [ 200 ] }}
 
 
 10. After sorting record find out total amount for individual customer ID
-
-db.employee.aggregate([{$sort:{'custID':1}},{$group:{_id:'$custID','totalAmount':{$sum:'$Amount'}}}])
-{ "_id" : "B212", "totalAmount" : 200 }
-{ "_id" : "A123", "totalAmount" : 1050 }
+	db.employee.aggregate([{$sort:{'custID':1}},{$group:{_id:'$custID','totalAmount':{$sum:'$Amount'}}}])
+	{ "_id" : "B212", "totalAmount" : 200 }
+	{ "_id" : "A123", "totalAmount" : 1050 }
 
 11. After sorting record find out average amount for individual customer ID
-
-db.employee.aggregate([{$sort:{'custID':1}},{$group:{_id:'$custID','totalAmount':{$avg:'$Amount'}}}])
-{ "_id" : "B212", "totalAmount" : 200 }
-{ "_id" : "A123", "totalAmount" : 350 }
+	db.employee.aggregate([{$sort:{'custID':1}},{$group:{_id:'$custID','totalAmount':{$avg:'$Amount'}}}])
+	{ "_id" : "B212", "totalAmount" : 200 }
+	{ "_id" : "A123", "totalAmount" : 350 }
 
 
 
 
 12. After sorting record find out minimum amount for individual customer ID
-
-db.employee.aggregate([{$sort:{'custID':1}},{$group:{_id:'$custID','totalAmount':{$min:'$Amount'}}}])
-{ "_id" : "B212", "totalAmount" : 200 }
-{ "_id" : "A123", "totalAmount" : 250 }
+	db.employee.aggregate([{$sort:{'custID':1}},{$group:{_id:'$custID','totalAmount':{$min:'$Amount'}}}])
+	{ "_id" : "B212", "totalAmount" : 200 }
+	{ "_id" : "A123", "totalAmount" : 250 }
 
 13.After sorting record Find out maximum amount for individual customer ID
-
-db.employee.aggregate([{$sort:{'custID':1}},{$group:{_id:'$custID','totalAmount':{$max:'$Amount'}}}])
-{ "_id" : "B212", "totalAmount" : 200 }
-{ "_id" : "A123", "totalAmount" : 500 }
+	db.employee.aggregate([{$sort:{'custID':1}},{$group:{_id:'$custID','totalAmount':{$max:'$Amount'}}}])
+	{ "_id" : "B212", "totalAmount" : 200 }
+	{ "_id" : "A123", "totalAmount" : 500 }
 
 14. After sorting record find out amount of First record for individual customer ID
-
-db.employee.aggregate([{$sort:{'custID':1}},{$group:{_id:'$custID','totalAmount':{$first:'$Amount'}}}])
-{ "_id" : "B212", "totalAmount" : 200 }
-{ "_id" : "A123", "totalAmount" : 500 }
+	db.employee.aggregate([{$sort:{'custID':1}},{$group:{_id:'$custID','totalAmount':{$first:'$Amount'}}}])
+	{ "_id" : "B212", "totalAmount" : 200 }
+	{ "_id" : "A123", "totalAmount" : 500 }
 
 15. After sorting record find out amount of last record for individual customer ID
-
-db.employee.aggregate([{$sort:{'custID':1}},{$group:{_id:'$custID','totalAmount':{$last:'$Amount'}}}])
-{ "_id" : "B212", "totalAmount" : 200 }
-{ "_id" : "A123", "totalAmount" : 300 }
+	db.employee.aggregate([{$sort:{'custID':1}},{$group:{_id:'$custID','totalAmount':{$last:'$Amount'}}}])
+	{ "_id" : "B212", "totalAmount" : 200 }
+	{ "_id" : "A123", "totalAmount" : 300 }
 
 16. After sorting record create array of amount for individual customer ID
-
-db.employee.aggregate([{$sort:{'custID':1}},{$group:{_id:'$custID','totalAmount':{$push:'$Amount'}}}])
-{ "_id" : "B212", "totalAmount" : [ 200 ] }
-{ "_id" : "A123", "totalAmount" : [ 500, 250, 300 ] }
+	db.employee.aggregate([{$sort:{'custID':1}},{$group:{_id:'$custID','totalAmount':{$push:'$Amount'}}}])
+	{ "_id" : "B212", "totalAmount" : [ 200 ] }
+	{ "_id" : "A123", "totalAmount" : [ 500, 250, 300 ] }
 
 
 
 17. Without considering first record Find out total amount for individual customer ID
-
-db.employee.aggregate([{$skip:1},{$group:{_id:'$custID','totalAmount':{$sum:'$Amount'}}}])
-{ "_id" : "B212", "totalAmount" : 200 }
-{ "_id" : "A123", "totalAmount" : 550 }
+	db.employee.aggregate([{$skip:1},{$group:{_id:'$custID','totalAmount':{$sum:'$Amount'}}}])
+	{ "_id" : "B212", "totalAmount" : 200 }
+	{ "_id" : "A123", "totalAmount" : 550 }
 
 18. Without considering first record Find out average amount for individual customer ID
-
-db.employee.aggregate([{$skip:1},{$group:{_id:'$custID','totalAmount':{$avg:'$Amount'}}}])
-{ "_id" : "B212", "totalAmount" : 200 }
-{ "_id" : "A123", "totalAmount" : 275 }
+	db.employee.aggregate([{$skip:1},{$group:{_id:'$custID','totalAmount':{$avg:'$Amount'}}}])
+	{ "_id" : "B212", "totalAmount" : 200 }
+	{ "_id" : "A123", "totalAmount" : 275 }
 
 
 19. Without considering first record Find out maximum amount for individual customer ID
-
-db.employee.aggregate([{$skip:1},{$group:{_id:'$custID','totalAmount':{$max:'$Amount'}}}])
-{ "_id" : "B212", "totalAmount" : 200 }
-{ "_id" : "A123", "totalAmount" : 300 }
+	db.employee.aggregate([{$skip:1},{$group:{_id:'$custID','totalAmount':{$max:'$Amount'}}}])
+	{ "_id" : "B212", "totalAmount" : 200 }
+	{ "_id" : "A123", "totalAmount" : 300 }
 
 20. Without considering first record Find out minimum amount for individual customer ID
-
-db.employee.aggregate([{$skip:1},{$group:{_id:'$custID','totalAmount':{$min:'$Amount'}}}])
-{ "_id" : "B212", "totalAmount" : 200 }
-{ "_id" : "A123", "totalAmount" : 250 }
+	db.employee.aggregate([{$skip:1},{$group:{_id:'$custID','totalAmount':{$min:'$Amount'}}}])
+	{ "_id" : "B212", "totalAmount" : 200 }
+	{ "_id" : "A123", "totalAmount" : 250 }
 
 21. Without considering first record create array of amount for individual customer ID
-
-db.employee.aggregate([{$skip:1},{$group:{_id:'$custID','totalAmount':{$push:'$Amount'}}}])
-{ "_id" : "B212", "totalAmount" : [ 200 ] }
-{ "_id" : "A123", "totalAmount" : [ 250, 300 ] }
+	db.employee.aggregate([{$skip:1},{$group:{_id:'$custID','totalAmount':{$push:'$Amount'}}}])
+	{ "_id" : "B212", "totalAmount" : [ 200 ] }
+	{ "_id" : "A123", "totalAmount" : [ 250, 300 ] }
 
 22. Without considering first record Find out amount of First record for individual customer ID
-
-db.employee.aggregate([{$skip:1},{$group:{_id:'$custID','totalAmount':{$first:'$Amount'}}}])
-{ "_id" : "B212", "totalAmount" : 200 }
-{ "_id" : "A123", "totalAmount" : 250 }
+	db.employee.aggregate([{$skip:1},{$group:{_id:'$custID','totalAmount':{$first:'$Amount'}}}])
+	{ "_id" : "B212", "totalAmount" : 200 }
+	{ "_id" : "A123", "totalAmount" : 250 }
 
 23.Without considering first record Find out amount of last record for individual customer ID 
+	db.employee.aggregate([{$skip:1},{$group:{_id:'$custID','totalAmount':{$last:'$Amount'}}}])
+	{ "_id" : "B212", "totalAmount" : 200 }
+	{ "_id" : "A123", "totalAmount" : 300 }
 
-db.employee.aggregate([{$skip:1},{$group:{_id:'$custID','totalAmount':{$last:'$Amount'}}}])
-{ "_id" : "B212", "totalAmount" : 200 }
-{ "_id" : "A123", "totalAmount" : 300 }
->
 24.Just by considering first 2 records Find out total amount for individual customer ID 
-
-db.employee.aggregate([{$limit:2},{$group:{_id:'$custID','totalAmount':{$sum:'$Amount'}}}])
-{ "_id" : "A123", "totalAmount" : 750 }
+	db.employee.aggregate([{$limit:2},{$group:{_id:'$custID','totalAmount':{$sum:'$Amount'}}}])
+	{ "_id" : "A123", "totalAmount" : 750 }
 
 25. Just by considering first 2 records Find out Average amount for individual customer ID 
-
-db.employee.aggregate([{$limit:2},{$group:{_id:'$custID','totalAmount':{$avg:'$Amount'}}}])
-{ "_id" : "A123", "totalAmount" : 375 }
+	db.employee.aggregate([{$limit:2},{$group:{_id:'$custID','totalAmount':{$avg:'$Amount'}}}])
+	{ "_id" : "A123", "totalAmount" : 375 }
 
 26. Just by considering first 2 records Find out minimum amount for individual customer ID 
-
-db.employee.aggregate([{$limit:2},{$group:{_id:'$custID','totalAmount':{$min:'$Amount'}}}])
-{ "_id" : "A123", "totalAmount" : 250 }
+	db.employee.aggregate([{$limit:2},{$group:{_id:'$custID','totalAmount':{$min:'$Amount'}}}])
+	{ "_id" : "A123", "totalAmount" : 250 }
 
 27. Just by considering first 2 records Find out Maximim amount for individual
-
-db.employee.aggregate([{$limit:2},{$group:{_id:'$custID','totalAmount':{$max:'$Amount'}}}])
-{ "_id" : "A123", "totalAmount" : 500 }
+	db.employee.aggregate([{$limit:2},{$group:{_id:'$custID','totalAmount':{$max:'$Amount'}}}])
+	{ "_id" : "A123", "totalAmount" : 500 }
 
 28. Just by considering first 2 records Find out amount of First record for individual customer ID
-
-db.employee.aggregate([{$limit:2},{$group:{_id:'$custID','totalAmount':{$first:'$Amount'}}}])
-{ "_id" : "A123", "totalAmount" : 500 }
+	db.employee.aggregate([{$limit:2},{$group:{_id:'$custID','totalAmount':{$first:'$Amount'}}}])
+	{ "_id" : "A123", "totalAmount" : 500 }
 
 29. Just by considering first 2 records Find out amount of last record for individual customer ID
-
-db.employee.aggregate([{$limit:2},{$group:{_id:'$custID','totalAmount':{$last:'$Amount'}}}])
-{ "_id" : "A123", "totalAmount" : 250 }
+	db.employee.aggregate([{$limit:2},{$group:{_id:'$custID','totalAmount':{$last:'$Amount'}}}])
+	{ "_id" : "A123", "totalAmount" : 250 }
 
 30. Just by considering first 2 records create array of amount for individual customer ID
-
-db.employee.aggregate([{$limit:2},{$group:{_id:'$custID','totalAmount':{$push:'$Amount'}}}])
-{ "_id" : "A123", "totalAmount" : [ 500, 250 ] }
+	db.employee.aggregate([{$limit:2},{$group:{_id:'$custID','totalAmount':{$push:'$Amount'}}}])
+	{ "_id" : "A123", "totalAmount" : [ 500, 250 ] }
 
 
 
