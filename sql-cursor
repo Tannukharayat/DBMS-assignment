@@ -1,0 +1,116 @@
+Database changed
+mysql> delimiter //
+mysql> create table student(
+    -> s_id int,
+    -> s_name varchar(20),
+    -> s_sub varchar(20)
+    -> );
+    -> //
+Query OK, 0 rows affected (0.50 sec)
+
+mysql> create table new_student(
+    -> s_id int,
+    -> s_name varchar(20),
+    -> s_sub varchar(20)
+    -> );
+    -> //
+Query OK, 0 rows affected (0.40 sec)
+
+
+mysql> create procedure merge()  
+begin 
+declare done boolean default false; 
+declare a,b int; 
+declare c,d,e,f varchar(20); 
+declare flag int default 0; 
+declare cursor1 cursor for select s_id,s_name,s_sub from student; 
+declare cursor2 cursor for select s_id,s_name,s_sub from new_student; 
+declare continue handler for not found set done:=true; 
+open cursor1; 
+loop1: loop 
+fetch cursor1 into a,c,d; 
+if done then 
+close cursor1; 
+leave loop1; 
+end if; 
+open cursor2; 
+loop2: loop 
+fetch cursor2 into b,e,f; 
+if done then set done:=false;  
+close cursor2; 
+leave loop2; 
+end if; 
+if a=b then set flag=1; 
+end if; 
+end loop loop2; 
+if flag=0 then 
+insert into new_student values(a,c,d); 
+end if; 
+set flag=0; 
+end loop loop1; 
+end;//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> insert into student values(1,'midhi','dsa');
+    -> //
+Query OK, 1 row affected (0.08 sec)
+
+mysql> insert into student values(2,'nikita','oop')//
+Query OK, 1 row affected (0.05 sec)
+
+mysql> insert into student values(3,'tanu','coa')//
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into new_student values(3,'tanu','coa')//
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into new_student values(6,'khara','dbms')//
+Query OK, 1 row affected (0.05 sec)
+
+mysql> select * from student;
+    -> //
++------+--------+-------+
+| s_id | s_name | s_sub |
++------+--------+-------+
+|    1 | midhi  | dsa   |
+|    2 | nikita | oop   |
+|    3 | tanu   | coa   |
++------+--------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select * from new_student;
+    -> //
++------+--------+-------+
+| s_id | s_name | s_sub |
++------+--------+-------+
+|    3 | tanu   | coa   |
+|    6 | khara  | dbms  |
++------+--------+-------+
+2 rows in set (0.00 sec)
+
+mysql> call merge();
+    -> //
+Query OK, 0 rows affected (0.11 sec)
+
+
++------+--------+-------+
+| s_id | s_name | s_sub |
++------+--------+-------+
+|    3 | tanu   | coa   |
+|    6 | khara  | dbms  |
+|    1 | midhi  | dsa   |
+|    2 | nikita | oop   |
++------+--------+-------+
+4 rows in set (0.00 sec)
+
+mysql> select * from student;
+    -> //
++------+--------+-------+
+| s_id | s_name | s_sub |
++------+--------+-------+
+|    1 | midhi  | dsa   |
+|    2 | nikita | oop   |
+|    3 | tanu   | coa   |
++------+--------+-------+
+3 rows in set (0.00 sec)
+
