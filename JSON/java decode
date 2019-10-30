@@ -1,0 +1,40 @@
+import org.json.simple.*;
+import org.json.simple.parser.*;
+import java.util.*;
+import java.lang.*;
+
+class decode
+{
+    public static void main(String[] args)
+    {
+
+        JSONObject jo = new JSONObject();
+        jo.put("Username","Saurabh");
+        jo.put("Password","123");
+        jo.put("Language","C++,Python");
+  
+        
+        System.out.println(jo.toString());
+        
+
+        try
+        {	
+
+        Object obj = new JSONParser().parse(jo.toString()); 
+                                                         
+        JSONObject jObj = (JSONObject)obj;
+
+        String x = (String)jObj.get("Username");
+        String y = (String)jObj.get("Password");
+        String z = (String)jObj.get("Language");
+        
+       
+        System.out.println(x);
+        System.out.println(y);
+        System.out.println(z);
+        
+       }
+       catch (Exception e) {}
+      
+    }
+}
