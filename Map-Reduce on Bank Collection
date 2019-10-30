@@ -1,0 +1,44 @@
+1. Create collection bank
+2. Insert following documents into it.
+ >db.bank.insert ({'custid':'c001','custname':'amit','bank':'SBI','blance':3000,'loction':'Pune'})
+> db.bank.insert ({'custid':'c002','custname':'amol','bank':'AXIS','blance':4000,'loction':'Pune'})
+> db.bank.insert ({'custid':'c002','custname':'amit','bank':'AXIS','blance':5000,'loction':'Mumbai'})
+> db.bank.insert ({'custid':'c003','custname':'amit','bank':'AXIS','blance':5000,'loction':'Nagpur'})
+> db.bank.insert ({'custid':'c004','custname':'amay','bank':'AXIS','blance':6000,'loction':'Nashik'})
+> db.bank.insert ({'custid':'c005','custname':'amar','bank':'HDFC','blance':7000,'loction':'pune'})
+> db.bank.insert ({'custid':'c006','custname':'vijay','bank':'HDFC','blance':8000,'loction':’Mumbai'})
+
+3. Perform aggregation using Map-Reduce to display bank wise balance 
+> var Mapfunction=function(){emit(this.bank,this.blance)}
+
+> var reducefunction=function(key,values){return Array.sum(values)}
+
+> db.bank.mapReduce(Mapfunction, reducefunction,{'out':'bankMR'})
+{	"result" : "bankMR",
+	"timeMillis" : 4,
+	"counts" : {
+		"input" : 7,
+		"emit" : 7,
+		"reduce" : 2,
+		"output" : 3
+	},
+	"ok" : 1,   }
+      4. Display the result of new collection bankMR
+> db.bankMR.find()
+{“_id”: "AXIS", "value”: 20000}
+{“_id”: "HDFC", "value”: 15000}
+{“_id”: "SBI", "value”: 3000}
+
+5. Display the balance of HDFC bank only from bankMR collection
+> db.bankMR.find ({'_id':'HDFC'})
+{“_id”: "HDFC", "value”: 15000}
+
+6. Display the balance of SBI bank only from bankMR collection
+> db.bankMR.find ({'_id':'SBI'})
+{“_id”: "SBI", "value”: 3000}
+7. Display the balance of AXIS bank only from bankMR collection
+> db.bankMR.find ({'_id':'AXIS'})
+{“_id”: "AXIS", "value”: 20000}
+
+
+
