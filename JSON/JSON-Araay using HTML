@@ -1,0 +1,44 @@
+<html>
+<head>
+<title>Creation of array object in javascript using JSON</title>
+<script language="javascript" >
+document.writeln("<h1>Example of JSON Array object</h1>");
+var book = { "DBMS" : [
+{ "Name" : "DBMS System", "Price" : 250 },
+{ "Name" : "No SQL ", "price" : 400 }
+],
+"Mongo" : [
+{ "Name" : "Mongo DB", "price" : 200 },
+{ "Name" : "Mongo DB and Java", "price" : 300 }
+]
+}
+var i = 0
+document.writeln("<table border='4'><tr>");
+for(i=0;i<book.DBMS.length;i++)
+{
+document.writeln("<td>");
+document.writeln("<table border='2' width=100 >");
+document.writeln("<tr><td><b>Name</b></td><td width=50>"
++ book.DBMS[i].Name+"</td></tr>");
+document.writeln("<tr><td><b>Price</b></td><td width=50>"
++ book.DBMS[i].price +"</td></tr>");
+document.writeln("</table>");
+document.writeln("</td>");
+}
+for(i=0;i<book.Mongo.length;i++)
+{
+document.writeln("<td>");
+document.writeln("<table border='2' width=100 >");
+document.writeln("<tr><td><b>Name</b></td><td width=50>"
++ book.Mongo[i].Name+"</td></tr>");
+document.writeln("<tr><td><b>Price</b></td><td width=50>"
++ book.Mongo[i].price+"</td></tr>");
+document.writeln("</table>");
+document.writeln("</td>");
+}
+document.writeln("</tr></table>");
+</script>
+</head>
+<body>
+</body>
+</html>
