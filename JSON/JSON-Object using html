@@ -1,0 +1,14 @@
+<html>
+<head>
+<title>Welcome</title>
+<script language="javascript" >
+var JSONObj = { "name" : " https://www.aitpune.com/", "Academic_Year": 2018-19 };
+document.write ("<h1>Learn to create JSON object</h1>");
+document.write ("<br>");
+document.write ("<h2>Website Name:"+JSONObj.name+"</h2>");
+document.write("<h2>Year is:"+JSONObj.Academic_Year+"</h2>");
+</script>
+</head>
+<body>
+</body>
+</html>
