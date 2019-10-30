@@ -1,4 +1,4 @@
-//insert,update,delete,display function for mongo Connectivity
+//insert,update,delete,display function for sql Connectivity
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
