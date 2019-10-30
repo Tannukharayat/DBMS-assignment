@@ -1,0 +1,131 @@
+mysql> create table stud_marks(
+    -> name varchar(20),
+    -> total_marks int);
+Query OK, 0 rows affected (0.38 sec)
+
+mysql> create table result( 
+r_no int, 
+name varchar(20), 
+category char 
+);
+Query OK, 0 rows affected (0.47 sec)
+
+mysql> create procedure find_classs(IN roll int)  begin declare markss int; select total_marks into markss from stud_marks where r_no=roll; if(markss>=990 and markss<=1500) then  update result set category='D'; elseif (markss>=989 and markss<=900) then update result set category='F'; elseif (markss>=925 and markss<=899) then update result set category='H'; end if; end;//
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> insert into stud_marks values(1,'nidhi',800);
+    -> //
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> alter table stud_marks add r_no int;
+    -> //
+Query OK, 0 rows affected (0.71 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from stud_marks;
+    -> //
+Empty set (0.00 sec)
+
+mysql> insert into stud_marks values('nidhi',800,1);
+    -> //
+Query OK, 1 row affected (0.05 sec)
+
+mysql> insert into stud_marks values('nikita',995,2);
+    -> //
+Query OK, 1 row affected (0.05 sec)
+
+mysql> insert into stud_marks values('tannu',1200,3);//
+Query OK, 1 row affected (0.07 sec)
+
+mysql> insert into result values(1,'nidhi','N')//
+Query OK, 1 row affected (0.05 sec)
+
+mysql> insert into result values(2,'nikita','N')//
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into result values(3,'nikitasa','N')//
+Query OK, 1 row affected (0.06 sec)
+
+mysql> select * from stud_marks;
+    -> //
++--------+-------------+------+
+| name   | total_marks | r_no |
++--------+-------------+------+
+| nidhi  |         800 |    1 |
+| nikita |         995 |    2 |
+| tannu  |        1200 |    3 |
++--------+-------------+------+
+3 rows in set (0.00 sec)
+
+mysql> select * from result;
+    -> //
++------+----------+----------+
+| r_no | name     | category |
++------+----------+----------+
+|    1 | nidhi    | N        |
+|    2 | nikita   | N        |
+|    3 | nikitasa | N        |
++------+----------+----------+
+3 rows in set (0.00 sec)
+
+mysql> call find_classs(3);
+    -> //
+Query OK, 3 rows affected (0.09 sec)
+
+mysql> select * from result;
+    -> //
++------+----------+----------+
+| r_no | name     | category |
++------+----------+----------+
+|    1 | nidhi    | D        |
+|    2 | nikita   | D        |
+|    3 | nikitasa | D        |
++------+----------+----------+
+3 rows in set (0.00 sec)
+
+mysql> call find_classs(2)//
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> select * from result;
+    -> //
++------+----------+----------+
+| r_no | name     | category |
++------+----------+----------+
+|    1 | nidhi    | D        |
+|    2 | nikita   | D        |
+|    3 | nikitasa | D        |
++------+----------+----------+
+3 rows in set (0.00 sec)
+
+create function finf_cls(roll int)
+    -> returns char deterministic 
+    -> begin
+    -> declare markss int;
+    -> declare grade char;
+    -> select total_marks into markss from stud_marks;
+    -> if(markss>=900 and markss<=1500) then
+    -> set grade='D';
+    -> end if;
+    -> return grade;
+    -> end;
+    -> //
+mysql> select find_cls(1);
+    -> //
++-------------+
+| find_cls(1) |
++-------------+
+| NULL        |
++-------------+
+1 row in set (0.03 sec)
+
+mysql> select find_cls(3);
+    -> //
++-------------+
+| find_cls(3) |
++-------------+
+| D           |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> 
+
+
