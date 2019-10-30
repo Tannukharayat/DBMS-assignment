@@ -1,0 +1,168 @@
+mysql> create table library( 
+    -> b_id int,
+    -> b_name varchar(20) ,
+    -> cost int
+    -> );
+Query OK, 0 rows affected (0.35 sec)
+
+mysql> create table library_audit(
+    -> b_id int,
+    -> b_name varchar(20),
+    -> cost int
+    -> );
+Query OK, 0 rows affected (0.34 sec)
+
+mysql> insert into library values(1,'dsa',100);
+Query OK, 1 row affected (0.06 sec)
+
+mysql> insert into library values(2,'oop',200);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> delimiter //
+mysql> create trigger beforee_insert before insert on library for each row begin
+ insert into library_audit values(new.b_id,new.b_name,new.cost); 
+    -> end;
+    -> //
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> insert into library values(4,'dbms',4000);
+    -> //
+Query OK, 1 row affected (0.05 sec)
+
+mysql> select * from library_audit;
+    -> //
++------+--------+------+
+| b_id | b_name | cost |
++------+--------+------+
+| NULL | NULL   | NULL |
+| NULL | NULL   | NULL |
+|    4 | dbms   | 4000 |
++------+--------+------+
+3 rows in set (0.01 sec)
+
+mysql> select * from library;
+    -> //
++------+--------+------+
+| b_id | b_name | cost |
++------+--------+------+
+|    1 | dsa    |  100 |
+|    2 | oop    |  200 |
+|    3 | coa    | 1000 |
+|    4 | dbms   | 4000 |
++------+--------+------+
+4 rows in set (0.00 sec)
+
+mysql> insert into library values(5,'deld',10500);
+    -> //
+Query OK, 1 row affected (0.05 sec)
+
+mysql> select * from library;
+    -> //
++------+--------+-------+
+| b_id | b_name | cost  |
++------+--------+-------+
+|    1 | dsa    |   100 |
+|    2 | oop    |   200 |
+|    3 | coa    |  1000 |
+|    4 | dbms   |  4000 |
+|    5 | deld   | 10500 |
++------+--------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select * from library_audit;
+    -> //
++------+--------+-------+
+| b_id | b_name | cost  |
++------+--------+-------+
+| NULL | NULL   |  NULL |
+| NULL | NULL   |  NULL |
+|    4 | dbms   |  4000 |
+| NULL | NULL   |  NULL |
+|    5 | deld   | 10500 |
++------+--------+-------+
+5 rows in set (0.00 sec)
+
+mysql> create trigger after_insert after insert on library for each row begin in
+sert into library_audit values(new.b_id,new.b_name,new.cost); 
+    -> end;
+    -> //
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> insert into library values(6,'cn',1050);
+    -> //
+Query OK, 1 row affected (0.05 sec)
+
+mysql> select * from library_audit;
+    -> //
++------+--------+-------+
+| b_id | b_name | cost  |
++------+--------+-------+
+| NULL | NULL   |  NULL |
+| NULL | NULL   |  NULL |
+|    4 | dbms   |  4000 |
+| NULL | NULL   |  NULL |
+|    5 | deld   | 10500 |
+| NULL | NULL   |  NULL |
+|    6 | cn     |  1050 |
+|    6 | cn     |  1050 |
++------+--------+-------+
+8 rows in set (0.00 sec)
+
+mysql> drop trigger beforee_insert;
+    -> //
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> insert into library values(7,'cnn',18050);
+    -> //
+Query OK, 1 row affected (0.07 sec)
+
+mysql> select * from library_audit;
+    -> //
++------+--------+-------+
+| b_id | b_name | cost  |
++------+--------+-------+
+| NULL | NULL   |  NULL |
+| NULL | NULL   |  NULL |
+|    4 | dbms   |  4000 |
+| NULL | NULL   |  NULL |
+|    5 | deld   | 10500 |
+| NULL | NULL   |  NULL |
+|    6 | cn     |  1050 |
+|    6 | cn     |  1050 |
+| NULL | NULL   |  NULL |
+|    7 | cnn    | 18050 |
++------+--------+-------+
+10 rows in set (0.00 sec)
+
+mysql> drop trigger after_insert;
+    -> //
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> insert into library values(8,'toc',180);
+    -> //
+Query OK, 1 row affected (0.06 sec)
+
+mysql> select * from library_audit;
+    -> 
+    -> //
++------+--------+-------+
+| b_id | b_name | cost  |
++------+--------+-------+
+| NULL | NULL   |  NULL |
+| NULL | NULL   |  NULL |
+|    4 | dbms   |  4000 |
+| NULL | NULL   |  NULL |
+|    5 | deld   | 10500 |
+| NULL | NULL   |  NULL |
+|    6 | cn     |  1050 |
+|    6 | cn     |  1050 |
+| NULL | NULL   |  NULL |
+|    7 | cnn    | 18050 |
+| NULL | NULL   |  NULL |
++------+--------+-------+
+11 rows in set (0.00 sec)
+
+mysql> create trigger af_delete after delete on library for each row begin insert into Library_audit values(old.roll,old.name,old.b_name,old.b_id); end;//
+
+
+
