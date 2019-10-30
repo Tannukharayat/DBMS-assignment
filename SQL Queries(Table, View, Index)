@@ -1,0 +1,17 @@
+1. Retrieve the id and name of the employees along with their department name(Use Left Join)
+  •SELECT t1.emp_id, t1.emp_name, t2.dept_name FROM employees AS t1 LEFT JOIN departments AS t2
+   ON t1.dept_id = t2.dept_id;
+
+2. Create View for the above query.
+  •create view empview as SELECT t1.emp_id, t1.emp_name, t2.dept_name FROM Employees AS t1 
+   LEFT JOIN Departments AS t2 ON t1.dept_id = t2.dept_id; 
+   
+3. Retrieve records from the above created view.
+   •select * from empview; 
+
+4. Replace the above view to show emp_id, .emp_name, dept_name salary also.
+   •create or replace view empview as SELECT t1.emp_id, t1.emp_name, t2.dept_name, 
+    t1.salary FROM Employees AS t1 LEFT JOIN Departments AS t2 ON t1.dept_id = t2.dept_id; 
+
+5. Drop the above created view.
+   •
