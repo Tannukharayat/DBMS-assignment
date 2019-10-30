@@ -1,0 +1,50 @@
+  Assignment -1
+1)Find different locations from where employees belong to?
+  select distinct Address from Employee; 
+
+2)What are maximum ,minimum salary, average salary and sum of all salaries?
+  select max(Salary),min(Salary),avg(Salary),sum(Salary) from Employee; 
+
+3)Display the content of employee table according to the ascending order of salary amount
+  select * from Employee order by Salary asc; 
+
+4)Find the name of employee who lived in Nasik or Pune city.
+  select EName from Employee where Address="Nasik" or Address="Pune"; 
+
+
+5)Find the name of employees who does not get commission.
+  select EName from Employee where Commission="0"; 
+
+
+6)Change the city of Amit to Nashik.
+  update Employee set Address="Nashik" where Ename="Amit";
+
+7)Find the information of employees whose name starts with ‘A’.
+  select * from Employee where EName="A%"; 
+
+8)Find the count of staff from Mumbai.
+  select count(*) from Employee where Address="Mumbai";  
+
+9)Find the count of staff from each city
+  select count(*),Address from Employee group by Address;  
+
+10)
+ 1. Find the address from where employees are belonging as well as where projects are going on.
+(Use union operator)
+  select Address from Employee union select Addr from Project;
+
+11)
+ 2. Find city wise minimum salary.
+  select min(Salary) from Employee group by Address; 
+
+12)Find city wise maximum salary having maximum salary greater than 26000
+  select max(Salary), Address from Employee where Salary > 26000 group by Address ; 
+
+13)Delete the employee who is having salary greater than 30,000.
+  Delete from Employee where Salary > 30000;
+
+14)Delete the information of employees whose name starts with‘s’.
+  Delete from Employee where Ename="%S";
+
+15)Display all the employee from Pune alphabetically.
+  select * from Employee order by EName asc; 
