@@ -1,0 +1,74 @@
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.FindIterable;
+import org.bson.Document;
+import javax.swing.JOptionPane;
+import java.util.Iterator;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
+
+ private void update(java.awt.event.ActionEvent evt) {                                         
+          Integer roll_t = Integer.parseInt(roll.getText());
+        String name_t = name.getText();
+         try{
+             MongoClient mong = new MongoClient("localhost",27017);
+             MongoCollection collection = mong.getDatabase("dbb").getCollection("mongoo");
+             collection.updateOne(Filters.eq("roll",roll_t),Updates.set("name",name_t));
+              JOptionPane.showMessageDialog(this,"updated successfully");
+            
+             
+         }catch(Exception e)
+         {
+             JOptionPane.showMessageDialog(this,ex.getMessage());
+         }
+       
+    }                                        
+
+    private void insert(java.awt.event.ActionEvent evt) {                                         
+        Integer roll_t = Integer.parseInt(roll.getText());
+        String name_t = name.getText();
+         Integer age_t = Integer.parseInt(age.getText());
+         try{
+             MongoClient mong = new MongoClient("localhost",27017);
+             MongoCollection collection = mong.getDatabase("dbb").getCollection("mongoo");
+              Document document = new Document("roll",roll_t).append("name",name_t).append("age",age_t);
+             collection.insertOne(document);
+             JOptionPane.showMessageDialog(this,"inserted successfully");
+            
+         }catch(Exception e)
+         {
+             JOptionPane.showMessageDialog(this,ex.getMessage());
+         }
+       
+    }                                        
+
+    private void delete(java.awt.event.ActionEvent evt) {                                         
+        Integer roll_t = Integer.parseInt(roll.getText());
+         try{
+             MongoClient mong = new MongoClient("localhost",27017);
+             MongoCollection collection = mong.getDatabase("dbb").getCollection("mongoo");
+             collection.deleteOne(Filters.eq("roll",roll_t));
+             JOptionPane.showMessageDialog(this,"deleted successfully");
+             
+             
+         }catch(Exception e)
+         {
+             JOptionPane.showMessageDialog(this,ex.getMessage());
+         }
+    }                                        
+
+    private void display(java.awt.event.ActionEvent evt) {                                         
+         try{
+             MongoClient mong = new MongoClient("localhost",27017);
+             MongoCollection collection = mong.getDatabase("dbb").getCollection("mongoo");
+             FindIterable<Document> iterdoc = collection.find();
+             Iterator it = iterdoc.iterator();
+             while(it.hasNext())
+             {
+                 System.out.println(it.next());
+             }
+         }catch(Exception e)
+         {
+             JOptionPane.showMessageDialog(this,ex.getMessage());
+         }
+    }                                        
